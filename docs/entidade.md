@@ -6,14 +6,12 @@ A entidade `Tarefa` representa uma atividade que precisa ser realizada pelo usu�
 
 ### Atributos
 
-* `id`: identificador único da tarefa;
 * `title`: título ou descrição da tarefa;
 * `completed`: indica se a tarefa foi concluída.
 
 ### Exemplo
 
 ```text
-ID: 1
 Título: Estudar PHP
 Concluída: Não
 ```
