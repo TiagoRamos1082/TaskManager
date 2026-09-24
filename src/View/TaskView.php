@@ -34,7 +34,14 @@ class TaskView
         print("3. DELETAR TAREFA\n");
         print("0. SAIR\n");
 
-        return (int) trim(fgets(STDIN));
+        $option = trim(fgets(STDIN));
+
+        if(filter_var($option, FILTER_VALIDATE_INT) || $option == 0){
+            return $option;
+        } else {
+            return -1;
+        }
+
     }
 
     public function createTask(array $tasks): string
@@ -93,7 +100,20 @@ class TaskView
 
     public function success(string $message): void
     {
+        $this->clear();
         print("\n" . $message . "\n");
+
+        print("\nPressione ENTER para continuar...\n");
+        fgets(STDIN);
+    }
+
+    public function fail(string $message): void
+    {
+        $this->clear();
+        print("\n !---" . $message . "---!\n");
+
+        print("\nPressione ENTER para continuar...\n");
+        fgets(STDIN);
     }
 
     public function clear(): void

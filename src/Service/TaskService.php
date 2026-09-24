@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Model\Task;
+use Exception;
 
 class TaskService
 {
@@ -13,8 +14,25 @@ class TaskService
         $this->tasks = [];
     }
 
+    private function findTask(int $index): Task
+    {
+        $index -= 1;
+
+        if(!isset($this->tasks[$index])) {
+            throw new Exception("Tarefa nao encontrada!");
+        }
+
+        return $this->tasks[$index];
+
+    }
+
+
     public function createTask(string $title): bool
     {
+        if(empty($title)){
+            throw new Exception("Titulo invalido!");
+        }
+
         $task = new Task($title);
 
         $this->tasks[] = $task;
@@ -29,9 +47,7 @@ class TaskService
 
     public function changeStatus(int $index): bool
     {
-        $index -= 1;
-
-        $task = $this->tasks[$index];
+        $task = $this->findTask($index);
 
         $task->changeStatus();
 
@@ -40,11 +56,16 @@ class TaskService
 
     public function deleteTask(int $index): bool
     {
-        $index -= 1;
+        $taskExist = $this->findTask($index);
 
-        unset($this->tasks[$index]);
+        $list = array_values($this->tasks);
 
-        $this->tasks = array_values($this->tasks);
+        if($taskExist) {
+            unset($list[($index - 1)]);
+            $newList = $list;
+        }
+
+        $this->tasks = $newList;
 
         return true;
     }
