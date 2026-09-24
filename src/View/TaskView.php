@@ -63,7 +63,7 @@ class TaskView
         return trim(fgets(STDIN));
     }
 
-    public function changeNameTask(array $tasks): string
+    public function changeTitleTask(array $tasks): array
     {
         $this->clear();
 
@@ -76,9 +76,15 @@ class TaskView
         print("==============================\n");
 
         print("ALTERAR NOME DA TAREFA\n\n");
-        print("Digite o nome da tarefa: ");
+        print("Digite o índice da tarefa: ");
 
-        return trim(fgets(STDIN));
+        $index =  (int) trim(fgets(STDIN));
+
+        print("Digite o novo nome da tarefa: ");
+
+        $title = trim(fgets(STDIN));
+
+        return [$index, $title];
     }
 
     public function changeStatus(array $tasks): int
