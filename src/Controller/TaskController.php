@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\TaskService;
 use App\View\TaskView;
+use Exception;
 
 class TaskController
 {
@@ -31,10 +32,14 @@ class TaskController
                 case 1:
                     $title = $this->view->createTask($tasks);
 
-                    $result = $this->tasks->createTask($title);
+                    try {
+                        $result = $this->tasks->createTask($title);
 
-                    if ($result) {
                         $this->view->success("Tarefa criada com sucesso!");
+
+                    } catch(Exception $e) {
+
+                        $this->view->fail($e->getMessage());
                     }
 
                     break;
@@ -42,10 +47,14 @@ class TaskController
                 case 2:
                     $index = $this->view->changeStatus($tasks);
 
-                    $result = $this->tasks->changeStatus($index);
+                    try {
+                        $result = $this->tasks->changeStatus($index);
 
-                    if ($result) {
-                        $this->view->success("Status da tarefa alterado com sucesso!");
+                        $this->view->success("Status alterado com sucesso!");
+
+                    } catch(Exception $e) {
+
+                        $this->view->fail($e->getMessage());
                     }
 
                     break;
@@ -53,16 +62,24 @@ class TaskController
                 case 3:
                     $index = $this->view->deleteTask($tasks);
 
-                    $result = $this->tasks->deleteTask($index);
+                    try {
+                        $result = $this->tasks->deleteTask($index);
 
-                    if ($result) {
                         $this->view->success("Tarefa deletada com sucesso!");
+
+                    } catch(Exception $e) {
+
+                        $this->view->fail($e->getMessage());
                     }
 
                     break;
 
                 case 0:
                     $this->isRunning = false;
+                    break;
+
+                default:
+                    $this->isRunning = true;
                     break;
             }
         }
