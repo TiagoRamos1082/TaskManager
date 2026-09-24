@@ -31,7 +31,7 @@ class TaskView
 
         print("1. CRIAR TAREFA\n");
         print("2. ALTERNAR STATUS\n");
-        print("3. ALTERAR NOME DA TAREFA");
+        print("3. ALTERAR NOME DA TAREFA\n");
         print("4. DELETAR TAREFA\n");
         print("0. SAIR\n");
 
