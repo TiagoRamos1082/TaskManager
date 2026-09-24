@@ -13,19 +13,20 @@ Ele utiliza a entidade `Task` para representar as tarefas e disponibiliza as ope
 * Criar novas tarefas;
 * Listar as tarefas cadastradas;
 * Alternar o status de uma tarefa;
+* Alternar o titulo de uma tarefa;
 * Deletar tarefas;
-* Localizar uma tarefa através do seu ID.
+
 
 ### Estrutura
 
-```text id="4bq8fz"
+```text 
 Service/
 └── TasksService.php
 ```
 
 ### Fluxo
 
-```text id="n6w4dy"
+```text 
 Controller
     ↓
 TasksService

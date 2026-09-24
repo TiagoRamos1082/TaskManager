@@ -19,7 +19,8 @@ As tarefas cadastradas são exibidas continuamente na tela. Abaixo da lista, o s
 
 1. CRIAR TAREFA
 2. ALTERNAR STATUS
-3. DELETAR TAREFA
+3. ALTERAR NOME DA TAREFA
+4. DELETAR TAREFA
 0. SAIR
 ```
 

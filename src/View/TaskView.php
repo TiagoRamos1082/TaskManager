@@ -1,152 +1,194 @@
-<?php
+# Views
 
-namespace App\View;
+As Views são responsáveis pela interação com o usuário através do terminal. Suas responsabilidades são apresentar as informações do sistema, exibir as opções disponíveis, receber as entradas do usuário e apresentar mensagens de sucesso ou erro.
 
-class TaskView
-{
-    public function listTasks(array $tasks): void
-    {
-        foreach ($tasks as $index => $task)
-        {
-            $title = $task->getTitle();
-            $done = $task->getStatus();
+A View não executa as regras de negócio diretamente. Ela apenas coleta as informações necessárias e as encaminha ao Controller, que coordena a execução das operações.
 
-            print("[" . ($done ? "X" : " ") . "] " . ($index + 1) . " - " . $title . "\n");
-        }
+## Menu Principal
 
-        print("\n");
-    }
+O menu principal apresenta continuamente as tarefas cadastradas, indicando seu status, seguido pelas operações disponíveis.
 
-    public function menu(array $tasks): int
-    {
-        $this->clear();
+```text
+==============================
+    GERENCIADOR DE TAREFAS
+==============================
 
-        print("==============================\n");
-        print("    GERENCIADOR DE TAREFAS    \n");
-        print("==============================\n");
+[ ] 1 - Estudar PHP
+[X] 2 - Fazer trabalho da faculdade
+[ ] 3 - Criar projeto
 
-        $this->listTasks($tasks);
+==============================
 
-        print("==============================\n");
+1. CRIAR TAREFA
+2. ALTERNAR STATUS
+3. ALTERAR NOME DA TAREFA
+4. DELETAR TAREFA
+0. SAIR
+```
 
-        print("1. CRIAR TAREFA\n");
-        print("2. ALTERNAR STATUS\n");
-        print("3. ALTERAR NOME DA TAREFA\n");
-        print("4. DELETAR TAREFA\n");
-        print("0. SAIR\n");
+O usuário seleciona uma das opções disponíveis. Caso seja informada uma opção inválida, a View retorna um valor que permite ao Controller tratar a entrada como inválida.
 
-        $option = trim(fgets(STDIN));
+---
 
-        if(filter_var($option, FILTER_VALIDATE_INT) || $option == 0){
-            return $option;
-        } else {
-            return -1;
-        }
+## View de Criar Tarefa
 
-    }
+Ao selecionar a opção `1`, a View apresenta as tarefas cadastradas e solicita o nome da nova tarefa.
 
-    public function createTask(array $tasks): string
-    {
-        $this->clear();
+```text
+==============================
+    GERENCIADOR DE TAREFAS
+==============================
 
-        print("==============================\n");
-        print("    GERENCIADOR DE TAREFAS    \n");
-        print("==============================\n");
+[ ] 1 - Estudar PHP
+[X] 2 - Fazer trabalho da faculdade
 
-        $this->listTasks($tasks);
+==============================
 
-        print("==============================\n");
+CRIAR TAREFA
 
-        print("CRIAR TAREFA\n\n");
-        print("Digite o nome da tarefa: ");
+Digite o nome da tarefa: Estudar Git
+```
 
-        return trim(fgets(STDIN));
-    }
+A View retorna o título informado pelo usuário para que o Controller possa executar a operação de criação.
 
-    public function changeTitleTask(array $tasks): array
-    {
-        $this->clear();
+Após a criação, o sistema apresenta uma mensagem de sucesso:
 
-        print("==============================\n");
-        print("    GERENCIADOR DE TAREFAS    \n");
-        print("==============================\n");
+```text
+Tarefa criada com sucesso!
 
-        $this->listTasks($tasks);
+Pressione ENTER para continuar...
+```
 
-        print("==============================\n");
+---
 
-        print("ALTERAR NOME DA TAREFA\n\n");
-        print("Digite o índice da tarefa: ");
+## View de Alterar Status
 
-        $index =  (int) trim(fgets(STDIN));
+Ao selecionar a opção `2`, a View apresenta as tarefas cadastradas e solicita o índice da tarefa que terá seu status alterado.
 
-        print("Digite o novo nome da tarefa: ");
+```text
+==============================
+    GERENCIADOR DE TAREFAS
+==============================
 
-        $title = trim(fgets(STDIN));
+[ ] 1 - Estudar PHP
+[X] 2 - Fazer trabalho da faculdade
+[ ] 3 - Criar projeto
 
-        return [$index, $title];
-    }
+==============================
 
-    public function changeStatus(array $tasks): int
-    {
-        $this->clear();
+ALTERNAR STATUS
 
-        print("==============================\n");
-        print("    GERENCIADOR DE TAREFAS    \n");
-        print("==============================\n");
+Digite o índice da tarefa: 2
+```
 
-        $this->listTasks($tasks);
+A View retorna o índice informado pelo usuário para que o Controller possa solicitar ao Model a alteração do status da tarefa.
 
-        print("==============================\n");
+Após a operação, o sistema apresenta uma mensagem correspondente ao resultado:
 
-        print("ALTERNAR STATUS\n\n");
-        print("Digite o índice da tarefa: ");
+```text
+Status da tarefa alterado com sucesso!
 
-        return (int) trim(fgets(STDIN));
-    }
+Pressione ENTER para continuar...
+```
 
-    public function deleteTask(array $tasks): int
-    {
-        $this->clear();
+---
 
-        print("==============================\n");
-        print("    GERENCIADOR DE TAREFAS    \n");
-        print("==============================\n");
+## View de Alterar Nome da Tarefa
 
-        $this->listTasks($tasks);
+Ao selecionar a opção `3`, a View apresenta as tarefas cadastradas e solicita o índice da tarefa que será alterada e seu novo nome.
 
-        print("==============================\n");
+```text
+==============================
+    GERENCIADOR DE TAREFAS
+==============================
 
-        print("DELETAR TAREFA\n\n");
-        print("Digite o índice da tarefa: ");
+[ ] 1 - Estudar PHP
+[X] 2 - Fazer trabalho da faculdade
+[ ] 3 - Criar projeto
 
-        return (int) trim(fgets(STDIN));
-    }
+==============================
 
-    public function success(string $message): void
-    {
-        $this->clear();
-        print("\n" . $message . "\n");
+ALTERAR NOME DA TAREFA
 
-        print("\nPressione ENTER para continuar...\n");
-        fgets(STDIN);
-    }
+Digite o índice da tarefa: 2
+Digite o novo nome da tarefa: Fazer trabalho de PHP
+```
 
-    public function fail(string $message): void
-    {
-        $this->clear();
-        print("\n !---" . $message . "---!\n");
+A View retorna o índice e o novo título da tarefa para que o Controller possa executar a operação.
 
-        print("\nPressione ENTER para continuar...\n");
-        fgets(STDIN);
-    }
+---
 
-    public function clear(): void
-    {
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            system('cls');
-        } else {
-            system('clear');
-        }
-    }
-}
+## View de Deletar Tarefa
+
+Ao selecionar a opção `4`, a View apresenta as tarefas cadastradas e solicita o índice da tarefa que será removida.
+
+```text
+==============================
+    GERENCIADOR DE TAREFAS
+==============================
+
+[ ] 1 - Estudar PHP
+[X] 2 - Fazer trabalho da faculdade
+[ ] 3 - Criar projeto
+
+==============================
+
+DELETAR TAREFA
+
+Digite o índice da tarefa: 2
+```
+
+A View retorna o índice informado pelo usuário para que o Controller possa executar a operação de exclusão.
+
+Após a exclusão, o sistema apresenta uma mensagem de sucesso:
+
+```text
+Tarefa deletada com sucesso!
+
+Pressione ENTER para continuar...
+```
+
+---
+
+## Mensagens de Sucesso e Erro
+
+A View possui métodos específicos para apresentar o resultado das operações ao usuário.
+
+### Mensagem de sucesso
+
+O método `success()` limpa o terminal, apresenta a mensagem recebida e aguarda o usuário pressionar ENTER antes de continuar.
+
+### Mensagem de erro
+
+O método `fail()` possui comportamento semelhante, mas é utilizado para apresentar mensagens relacionadas a falhas ou entradas inválidas.
+
+---
+
+## Limpeza do Terminal
+
+O método `clear()` é responsável por limpar o terminal antes da apresentação de cada tela.
+
+A implementação verifica o sistema operacional utilizado e executa o comando correspondente:
+
+* `cls` para Windows;
+* `clear` para sistemas Unix/Linux.
+
+Dessa forma, a interface mantém uma apresentação organizada independentemente do sistema operacional.
+
+---
+
+## Responsabilidade da View
+
+A View possui como responsabilidade exclusiva a interação com o usuário.
+
+Suas principais responsabilidades são:
+
+* apresentar as tarefas cadastradas;
+* apresentar o menu de operações;
+* receber entradas do usuário;
+* retornar os dados informados ao Controller;
+* apresentar mensagens de sucesso;
+* apresentar mensagens de erro;
+* controlar a apresentação visual do terminal.
+
+A View não deve ser responsável pela execução das regras de negócio. O fluxo da aplicação é coordenado pelo Controller, enquanto as operações relacionadas aos dados e às tarefas são realizadas pelas demais camadas do sistema.
