@@ -40,6 +40,24 @@ class TaskService
         return true;
     }
 
+    public function changeTitleTask(array $response): bool
+    {
+        $index = $response[0];
+        $title = $response[1];
+
+        $task = $this->findTask($index);
+
+
+        if(empty($title)){
+            throw new Exception("Titulo invalido!");
+        }
+
+        $task->setTitle($title);
+
+        return true;
+    }
+
+
     public function listTasks(): array
     {
         return $this->tasks;

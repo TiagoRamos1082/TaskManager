@@ -60,6 +60,21 @@ class TaskController
                     break;
 
                 case 3:
+                    $responses = $this->view->changeTitleTask($tasks);
+
+                    try {
+                        $result = $this->tasks->changeTitleTask($responses);
+
+                        $this->view->success("Status alterado com sucesso!");
+
+                    } catch(Exception $e) {
+
+                        $this->view->fail($e->getMessage());
+                    }
+
+                    break;
+
+                case 4:
                     $index = $this->view->deleteTask($tasks);
 
                     try {

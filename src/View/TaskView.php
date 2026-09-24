@@ -31,7 +31,8 @@ class TaskView
 
         print("1. CRIAR TAREFA\n");
         print("2. ALTERNAR STATUS\n");
-        print("3. DELETAR TAREFA\n");
+        print("3. ALTERAR NOME DA TAREFA\n");
+        print("4. DELETAR TAREFA\n");
         print("0. SAIR\n");
 
         $option = trim(fgets(STDIN));
@@ -60,6 +61,30 @@ class TaskView
         print("Digite o nome da tarefa: ");
 
         return trim(fgets(STDIN));
+    }
+
+    public function changeTitleTask(array $tasks): array
+    {
+        $this->clear();
+
+        print("==============================\n");
+        print("    GERENCIADOR DE TAREFAS    \n");
+        print("==============================\n");
+
+        $this->listTasks($tasks);
+
+        print("==============================\n");
+
+        print("ALTERAR NOME DA TAREFA\n\n");
+        print("Digite o índice da tarefa: ");
+
+        $index =  (int) trim(fgets(STDIN));
+
+        print("Digite o novo nome da tarefa: ");
+
+        $title = trim(fgets(STDIN));
+
+        return [$index, $title];
     }
 
     public function changeStatus(array $tasks): int
